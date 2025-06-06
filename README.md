@@ -1,26 +1,28 @@
 # Pluma Criolla
 
-Pluma Criolla es una plataforma web diseñada específicamente para adultos mayores que desean compartir contenido literario propio. La aplicación prioriza la simplicidad, accesibilidad y facilidad de uso.
+Plataforma de publicación literaria desarrollada con Django y Docker. Diseñada para ser accesible y fácil de usar, con un enfoque en la experiencia del usuario.
 
 ## Estructura del Proyecto
 
 ```
 wind-pluma-criolla/
-├── docker/                  # Configuraciones de Docker
-│   ├── django/             # Configuración de Django
-│   └── postgres/           # Configuración de PostgreSQL
-├── requirements/           # Dependencias de Python
-│   ├── base.txt           # Dependencias base
-│   ├── dev.txt            # Dependencias de desarrollo
-│   └── prod.txt           # Dependencias de producción
-└── src/                   # Código fuente
-    └── pluma_criolla/     # Proyecto Django
+├── compose/                # Configuración Docker por ambiente
+│   ├── local/             # Ambiente de desarrollo
+│   │   ├── django/        # Configuración Django
+│   │   └── postgres/      # Configuración PostgreSQL
+├── requirements/          # Requerimientos Python por ambiente
+│   ├── base.txt          # Requerimientos base
+│   ├── dev.txt           # Requerimientos desarrollo
+│   └── prod.txt          # Requerimientos producción
+└── src/                  # Código fuente Django
+    ├── pluma_criolla/    # Aplicación principal
+    ├── static/           # Archivos estáticos
+    └── templates/        # Templates HTML
 ```
 
-## Requisitos Previos
+## Requisitos
 
-- Docker
-- Docker Compose
+- Docker y Docker Compose
 - Git
 
 ## Configuración Inicial
@@ -31,93 +33,92 @@ wind-pluma-criolla/
    cd wind-pluma-criolla
    ```
 
-2. Crear archivo de variables de entorno:
+2. Copiar el archivo de variables de entorno:
    ```bash
    cp .env.example .env
    ```
 
-3. Iniciar los servicios:
+3. Configurar las variables en `.env`:
+   - `DJANGO_SECRET_KEY`: Generar una clave secreta de 50 caracteres
+   - `GOOGLE_OAUTH_CLIENT_ID` y `GOOGLE_OAUTH_SECRET`: Obtener de Google Cloud Console
+
+## Ejecución del Proyecto
+
+1. Iniciar los contenedores:
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 
-El comando anterior:
-- Construye las imágenes necesarias
-- Inicia los contenedores
-- Ejecuta las migraciones de Django
-- Crea un superusuario por defecto
-- Configura los permisos necesarios
-
-## Credenciales por Defecto
-
-### Base de Datos (PostgreSQL)
-- **Database**: pluma_criolla
-- **User**: pluma_criolla
-- **Password**: pluma_criolla_pass
-
-### Django Admin
-- **Username**: admin
-- **Email**: admin@plumacriolla.com
-- **Password**: pluma_admin_pass
-
-Estas credenciales se pueden modificar en el archivo `.env` antes de iniciar los contenedores.
-
-## Desarrollo Local
-
-### Comandos Útiles
-
-1. Iniciar servicios:
+2. Verificar los logs:
    ```bash
-   docker-compose up -d
+   docker compose logs -f
    ```
 
-2. Ver logs:
-   ```bash
-   docker-compose logs -f
-   ```
+3. Acceder a la aplicación:
+   - Web: http://localhost:8000
+   - Admin: http://localhost:8000/admin
 
-3. Ejecutar migraciones:
-   ```bash
-   docker-compose exec web python manage.py migrate
-   ```
+### Credenciales por Defecto
 
-4. Crear superusuario:
-   ```bash
-   docker-compose exec web python manage.py createsuperuser
-   ```
+- **Admin Django**:
+  - Usuario: admin
+  - Email: admin@plumacriolla.com
+  - Contraseña: pluma_admin_pass
 
-5. Detener servicios:
-   ```bash
-   docker-compose down
-   ```
+## Mantenimiento
 
-### Hot Reload
-El código se actualiza automáticamente al guardar cambios en los archivos. No es necesario reiniciar los contenedores.
+### Base de Datos
 
-## Acceso a la Aplicación
+- **Backup**:
+  ```bash
+  docker compose exec postgres backup
+  ```
 
-- **Aplicación Web**: http://localhost:8000
-- **Admin Django**: http://localhost:8000/admin
+- **Listar backups**:
+  ```bash
+  docker compose exec postgres backups
+  ```
 
-## Pruebas
+- **Restaurar backup**:
+  ```bash
+  docker compose exec postgres restore <backup-name>
+  ```
 
-```bash
-docker-compose exec web python manage.py test
-```
+### Desarrollo
 
-## Despliegue a Producción
+- **Ver logs Django**:
+  ```bash
+  docker compose logs django
+  ```
 
-Para despliegue a producción, asegúrate de:
-1. Modificar las variables de entorno en `.env`
-2. Usar contraseñas seguras
-3. Configurar los servicios de Google OAuth
+- **Shell Django**:
+  ```bash
+  docker compose exec django python manage.py shell
+  ```
 
-## Contribución
+- **Crear migraciones**:
+  ```bash
+  docker compose exec django python manage.py makemigrations
+  ```
 
-1. Crear una rama para tu feature
-2. Realizar cambios siguiendo las guías de estilo
-3. Enviar pull request
+## Tecnologías Principales
+
+- Django 4.2
+- PostgreSQL
+- django-allauth (Autenticación y OAuth)
+- Tailwind CSS
+- HTMX
+- CKEditor
+
+## Características
+
+- Autenticación con Google OAuth
+- Editor WYSIWYG para publicaciones
+- Diseño responsive con Tailwind CSS
+- Interacciones dinámicas con HTMX
+- Sistema de usuarios y perfiles
+- Panel de administración Django
 
 ## Licencia
 
-Este proyecto está bajo la licencia MIT. Ver el archivo `LICENSE` para más detalles.
+Copyright © 2025 Pluma Criolla. Todos los derechos reservados.
