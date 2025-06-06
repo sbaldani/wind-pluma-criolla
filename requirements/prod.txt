@@ -1,0 +1,12 @@
+-r base.txt
+
+# WSGI Server
+gunicorn>=21.2.0  # Servidor WSGI
+
+# Security
+django-permissions-policy>=4.18.0  # Políticas de permisos
+django-csp>=3.7  # Content Security Policy
+
+# Monitoring
+sentry-sdk>=1.39.1  # Monitoreo de errores
+django-prometheus-metrics>=2.1.0  # Métricas Prometheus

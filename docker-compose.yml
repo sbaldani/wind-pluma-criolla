@@ -1,0 +1,46 @@
+version: '3.8'
+
+volumes:
+  postgres_data: {}
+  static_volume: {}
+  media_volume: {}
+  backup_volume: {}
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+      args:
+        - BUILD_ENVIRONMENT=local
+    image: pluma_criolla_local_django
+    container_name: pluma_criolla_django
+    depends_on:
+      - postgres
+    volumes:
+      - ./src:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    env_file:
+      - .env
+    ports:
+      - '8000:8000'
+    command: /start
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/local/postgres/Dockerfile
+    image: pluma_criolla_local_postgres
+    container_name: pluma_criolla_postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - backup_volume:/backups
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - '5433:5432'

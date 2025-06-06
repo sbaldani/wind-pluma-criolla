@@ -1,0 +1,26 @@
+# Django
+Django>=4.2.0,<4.3.0
+django-environ>=0.11.2  # Manejo de variables de entorno
+django-model-utils>=4.3.1  # Utilidades para modelos
+
+# Autenticación
+django-allauth>=0.58.2  # Autenticación y OAuth
+PyJWT>=2.8.0  # JSON Web Tokens
+cryptography>=42.0.2  # Criptografía para JWT
+
+# Frontend
+django-htmx>=1.17.2  # HTMX integración
+whitenoise>=6.6.0  # Servir archivos estáticos
+
+# Database
+psycopg2-binary>=2.9.9  # PostgreSQL
+
+# Forms
+django-crispy-forms>=2.1  # Formularios mejorados
+crispy-tailwind>=1.0.0  # Tailwind para crispy-forms
+
+# Rich Text Editor
+django-ckeditor>=6.7.0  # Editor WYSIWYG
+
+# Imágenes
+Pillow>=10.2.0  # Procesamiento de imágenes

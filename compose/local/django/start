@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+# Aplicar migraciones
+python manage.py migrate
+
+# Crear superusuario
+python manage.py shell << END
+from django.contrib.auth import get_user_model
+User = get_user_model()
+if not User.objects.filter(username='${DJANGO_SUPERUSER_USERNAME}').exists():
+    User.objects.create_superuser(
+        username='${DJANGO_SUPERUSER_USERNAME}',
+        email='${DJANGO_SUPERUSER_EMAIL}',
+        password='${DJANGO_SUPERUSER_PASSWORD}'
+    )
+    print('Superuser created successfully')
+                                '${DJANGO_SUPERUSER_EMAIL}', 
+                                '${DJANGO_SUPERUSER_PASSWORD}')
+    print('Superusuario creado')
+else:
+    print('Superusuario ya existe')
+END
+
+# Create default site for django-allauth
+python manage.py shell << END
+from django.contrib.sites.models import Site
+if not Site.objects.exists():
+    Site.objects.create(domain='localhost:8000', name='Pluma Criolla')
+    print('Sitio por defecto creado')
+else:
+    print('Sitio por defecto ya existe')
+END
+
+exec python manage.py runserver 0.0.0.0:8000

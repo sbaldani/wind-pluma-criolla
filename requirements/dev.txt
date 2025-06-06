@@ -1,0 +1,22 @@
+-r base.txt
+
+# Testing
+pytest>=7.4.3  # Framework de testing
+pytest-django>=4.7.0  # Integración Django-pytest
+pytest-sugar>=0.9.7  # Mejor formato de salida
+pytest-cov>=4.1.0  # Cobertura de código
+
+# Code quality
+black>=23.12.1  # Formateador de código
+flake8>=7.0.0  # Linter
+isort>=5.13.2  # Ordenar imports
+mypy>=1.8.0  # Type checking
+django-stubs>=4.2.7  # Type hints para Django
+
+# Django
+django-debug-toolbar>=4.2.0  # Barra de debug
+django-extensions>=3.2.3  # Comandos y utilidades extra
+
+# Documentation
+Sphinx>=7.2.6  # Generador de documentación
+sphinx-autobuild>=2021.3.14  # Auto-reload de documentación
